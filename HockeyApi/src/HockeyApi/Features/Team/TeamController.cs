@@ -19,13 +19,13 @@ namespace HockeyApi.Features {
 			return _service.List();
 		}
 
-		[HttpGet("{team_code}")]
-		public async Task<IEnumerable<TeamDetailDto>> Get()
-        {
+        //[HttpGet("{team_code}")]
+        //public async Task<IEnumerable<TeamDetailDto>> Get()
+        //{
 
-        }
+        //}
 
-		public IActionResult Index() => 
+        public IActionResult Index() => 
 			Json(_service.List());
 	}
 }
