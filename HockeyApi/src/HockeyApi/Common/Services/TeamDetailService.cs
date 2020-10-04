@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HockeyApi.Features.RosterTransaction
+namespace HockeyApi.Common.Services
 {
-    public class RosterTransactionModel
+    public class TeamDetailService
     {
-
-
-
     }
 }

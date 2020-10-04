@@ -27,6 +27,7 @@ namespace HockeyApi {
 			string connStr = _configuration.GetConnectionString("Default");
 			services.AddScoped<IDb>(_ => new Db(_configuration.GetConnectionString("Default")));
 			services.AddScoped<ITeamService, TeamService>();
+			
 		}
 
 		public void Configure(IApplicationBuilder app) {
