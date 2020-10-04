@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HockeyApi.Features {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class TeamController : Controller {
 		private readonly ITeamService _service;

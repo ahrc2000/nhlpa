@@ -460,11 +460,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\testfolder\\developer-tests-master\\developer-tests-master\\HockeyApi\\src\\HockeyApi\\HockeyApi.csproj",
+      "projectUniqueName": "C:\\testfolder\\nhlpa\\HockeyApi\\src\\HockeyApi\\HockeyApi.csproj",
       "projectName": "HockeyApi",
-      "projectPath": "C:\\testfolder\\developer-tests-master\\developer-tests-master\\HockeyApi\\src\\HockeyApi\\HockeyApi.csproj",
+      "projectPath": "C:\\testfolder\\nhlpa\\HockeyApi\\src\\HockeyApi\\HockeyApi.csproj",
       "packagesPath": "C:\\Users\\alich\\.nuget\\packages\\",
-      "outputPath": "C:\\testfolder\\developer-tests-master\\developer-tests-master\\HockeyApi\\src\\HockeyApi\\obj\\",
+      "outputPath": "C:\\testfolder\\nhlpa\\HockeyApi\\src\\HockeyApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
