@@ -238,3 +238,32 @@ VALUES
 			, (79,1,79,'SND','2020-01-15')
 			, (80,1,80,'SND','2020-01-15');
 SET IDENTITY_INSERT [roster_transaction] OFF;
+
+---Add in the transaction history table
+USE [HOCKEY_API]
+GO
+
+/****** Object:  Table [dbo].[roster_history]    Script Date: 2020-10-04 4:24:11 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[roster_history]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[roster_history](
+	[roster_history_id] [int] IDENTITY(1,1) NOT NULL,
+	[player_id] [int] NOT NULL,
+	[roster_transaction_type_id] [int] NOT NULL,
+ CONSTRAINT [PK_roster_history] PRIMARY KEY CLUSTERED 
+(
+	[roster_history_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+
+
+
