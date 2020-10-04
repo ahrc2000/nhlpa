@@ -1,4 +1,5 @@
 ﻿using HockeyApi.Common.DTO;
+using HockeyApi.Common.Enums;
 using HockeyApi.Common.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -41,9 +42,23 @@ namespace HockeyApi.Features.Player
 
         }
 
+        [HttpPut("{playerId}")]
+        public async Task<string> Injured(int playerId, DateTime effectiveDate)
+        {
+            return _hservice.ChangePlayerStatus(playerId, (int)TransactionType.Injured, effectiveDate);
+        }
 
-        //[HttpPut]
-        //public async Task<int> updatePlayerTransactionRecord()
+        [HttpPut("{playerId}")]
+        public async Task<string> healthy(int playerId, DateTime effectiveDate)
+        {
+            return _hservice.ChangePlayerStatus(playerId, (int)TransactionType.Healthy, effectiveDate);
+        }
+
+        [HttpPut("{playerId}")]
+        public async Task<string> trade(int playerId, string team_code, DateTime effectiveDate)
+        {
+            return _hservice.TradePlayer(playerId,team_code , effectiveDate);
+        }
 
 
 

@@ -1,6 +1,7 @@
 ﻿using HockeyApi.Common.Enums;
 using HockeyApi.Features;
 using HockeyApi.Features.Player;
+using HockeyApi.Features.RosterHistory;
 using HockeyApi.Features.RosterTransaction;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,14 @@ namespace HockeyApi.Common.Services
         private readonly IPlayerService _pservice;
         private readonly IRosterTransactionService _rtservice;
         private readonly ITeamService _tservice;
+        private readonly IRosterHistoryService _rhservice;
 
-        public HelperService(IPlayerService pservic, IRosterTransactionService rtservice, ITeamService tservice)
+        public HelperService(IPlayerService pservic, IRosterTransactionService rtservice, ITeamService tservice, IRosterHistoryService rhservice)
         {
             _pservice = pservic;
             _tservice = tservice;
             _rtservice = rtservice;
+            _rhservice = rhservice;
         }
 
 
@@ -54,23 +57,117 @@ namespace HockeyApi.Common.Services
         }
 
 
-        public int ChangePlayerStatus(int playerId, int rttypeId) {
-        
+        public string ChangePlayerStatus(int playerId, int rttypeId, DateTime efdate)
+        {
+
+            int playerStatus = CheckPlayerStatus(playerId);
+            string result = string.Empty;
+
+
+            if (rttypeId == (int)TransactionType.Injured)
+            {
+                if (playerStatus == (int)TransactionType.Healthy || playerStatus == (int)TransactionType.Signed || playerStatus == (int)TransactionType.Traded)
+                {
+                    int resp = SetPlayerStatusToInjured(playerId, efdate);
+                    if (resp == 1)
+                    {
+                        result = "Status changed successfuly";
+                    }
+                    else
+                    {
+                        result = "there was an error in the input please check again";
+                    }
+                }
+                else
+                {
+                    result = "player status can not be changed due to set rules";
+                }
+            }
+            else if (rttypeId == (int)TransactionType.Healthy)
+            {
+                if (playerStatus == (int)TransactionType.Injured)
+                {
+                    int resp = SetPlayerStatusToHealthy(playerId, efdate);
+                    if (resp == 1)
+                        result = "status changed successfuly";
+                    else
+                        result = "there was an error in the input please check again";
+                }
+                else
+                {
+                    result = "player status can not be changed due to set rules";
+                }
+            }
+
+            return result;
 
         }
 
-        public int SetPlayerStatusToHealthy(int playerId) { }
+        public int SetPlayerStatusToHealthy(int playerId, DateTime efdate)
+        {
 
-        public int setPlayerStatusToInjured(int playerId) { }
+            RosterTransactionModel rmodel = _rtservice.GetRtForPlayerById(playerId);
+            _rhservice.InsertHistoryTransactionRecord(rmodel);
+            int result = _rtservice.UpdatePlayerTType(playerId, (int)TransactionType.Healthy, efdate);
+            return result;
+        }
+
+        public int SetPlayerStatusToInjured(int playerId, DateTime efdate)
+        {
+            RosterTransactionModel rmodel = _rtservice.GetRtForPlayerById(playerId);
+            _rhservice.InsertHistoryTransactionRecord(rmodel);
+            int result = _rtservice.UpdatePlayerTType(playerId, (int)TransactionType.Injured, efdate);
+            return result;
+        }
 
 
-        public int CheckPlayerStatus(int playerId) { }
+        public int CheckPlayerStatus(int playerId)
+        {
+            RosterTransactionModel rmodel = _rtservice.GetRtForPlayerById(playerId);
+            return rmodel.rosterTransactionTypeId;
+        }
 
 
-        public int TradePlayer(int playerId, string teamCode, DateTime effdt) { }
+        public string TradePlayer(int playerId, string teamCode, DateTime effdt)
+        {
+            int playerStatus = CheckPlayerStatus(playerId);
+            string result = string.Empty;
+            RosterTransactionModel rtmodel = _rtservice.GetRtForPlayerById(playerId);
+            if (playerStatus != (int)TransactionType.Injured)
+            {
+                int resp = _rtservice.UpdatePlayerTeam(playerId, teamCode, effdt);
+                if (resp == 1)
+                {
+                    result = $"player successufly traded to {teamCode}";
+                    _rhservice.InsertHistoryTransactionRecord(rtmodel);
+                }
+                else
+                    result = "please check the trade information";
+            }
+
+            return result;
+        }
 
 
+        public string SignPlayer(int playerId, DateTime effdate)
+        {
+            int playerStatus = CheckPlayerStatus(playerId);
+            string result = string.Empty;
+            RosterTransactionModel rtmodel = _rtservice.GetRtForPlayerById(playerId);
+            if (playerStatus == (int)TransactionType.Healthy)
+            {
+                int resp = _rtservice.UpdatePlayerTType(playerId, (int)TransactionType.Signed, effdate);
+                if (resp == 1)
+                {
+                    result = $"player successufly signed ";
+                    _rhservice.InsertHistoryTransactionRecord(rtmodel);
+                }
+                else
+                    result = "please check the trade information";
+            }
 
+            return result;
+        }
 
 
 

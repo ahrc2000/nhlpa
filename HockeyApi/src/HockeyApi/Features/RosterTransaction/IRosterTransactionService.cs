@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HockeyApi.Features.RosterTransaction
 {
@@ -9,7 +10,7 @@ namespace HockeyApi.Features.RosterTransaction
         IEnumerable<RosterTransactionModel> GetAll();
         RosterTransactionModel GetRtForPlayerById(int id);
         IEnumerable<RosterTransactionModel> getRtForTeamByTeamCode(string tcode);
-        int UpdatePlayerTeam(int playerId, string teamcode);
-        int UpdatePlayerTType(int playerId, int rtranstype);
+        int UpdatePlayerTeam(int playerId, string teamcode, DateTime effdate);
+        int UpdatePlayerTType(int playerId, int rtranstype, DateTime efdate);
     }
 }

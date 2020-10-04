@@ -243,26 +243,69 @@ SET IDENTITY_INSERT [roster_transaction] OFF;
 USE [HOCKEY_API]
 GO
 
-/****** Object:  Table [dbo].[roster_history]    Script Date: 2020-10-04 4:24:11 PM ******/
+/****** Object:  Table [dbo].[roster_trans_history]    Script Date: 2020-10-04 5:15:28 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[roster_history]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[roster_trans_history]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[roster_history](
-	[roster_history_id] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[roster_trans_history](
+	[roster_trans_history_id] [int] IDENTITY(1,1) NOT NULL,
+	[roster_trans_id] [int] NOT NULL,
+	[roster_trans_type_id] [int] NOT NULL,
 	[player_id] [int] NOT NULL,
-	[roster_transaction_type_id] [int] NOT NULL,
- CONSTRAINT [PK_roster_history] PRIMARY KEY CLUSTERED 
+	[team_code] [char](3) NOT NULL,
+	[effective_date] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
 (
-	[roster_history_id] ASC
+	[roster_trans_history_id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
 GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_player]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history]  WITH CHECK ADD  CONSTRAINT [FK_player] FOREIGN KEY([player_id])
+REFERENCES [dbo].[player] ([player_id])
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_player]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history] CHECK CONSTRAINT [FK_player]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_roster_trans_id]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history]  WITH CHECK ADD  CONSTRAINT [FK_roster_trans_id] FOREIGN KEY([roster_trans_id])
+REFERENCES [dbo].[roster_transaction] ([roster_transaction_id])
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_roster_trans_id]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history] CHECK CONSTRAINT [FK_roster_trans_id]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_roster_transaction_type_id]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history]  WITH CHECK ADD  CONSTRAINT [FK_roster_transaction_type_id] FOREIGN KEY([roster_trans_type_id])
+REFERENCES [dbo].[roster_transaction_type] ([roster_transaction_type_id])
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_roster_transaction_type_id]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history] CHECK CONSTRAINT [FK_roster_transaction_type_id]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_teamcode]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history]  WITH CHECK ADD  CONSTRAINT [FK_teamcode] FOREIGN KEY([team_code])
+REFERENCES [dbo].[team] ([team_code])
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_teamcode]') AND parent_object_id = OBJECT_ID(N'[dbo].[roster_trans_history]'))
+ALTER TABLE [dbo].[roster_trans_history] CHECK CONSTRAINT [FK_teamcode]
+GO
+
+
+
+
 
 
 

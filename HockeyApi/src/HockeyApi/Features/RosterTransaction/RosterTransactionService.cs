@@ -212,7 +212,7 @@ namespace HockeyApi.Features.RosterTransaction
             return result;
         }
 
-        public int UpdatePlayerTeam(int playerId, string teamcode)
+        public int UpdatePlayerTeam(int playerId, string teamcode, DateTime effdate)
         {
             int result = -100;
             using (var conn = _db.CreateConnection())
@@ -220,13 +220,13 @@ namespace HockeyApi.Features.RosterTransaction
             {
                 cmd.CommandText = @"
                     update roster_transaction 
-                    set team_code= @tcode , effective_date =@effective_date 
+                    set team_code= @tcode , effective_date = @effective_date 
                     where player_id = @player_id";
 
 
                 SqlParameter tcode = new SqlParameter(); tcode.ParameterName = "@tcode"; tcode.Value = teamcode;
                 SqlParameter player_id = new SqlParameter(); player_id.ParameterName = "@player_id"; player_id.Value = playerId;
-                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = DateTime.Now;
+                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = effdate;
 
                 cmd.Parameters.Add(tcode);
                 cmd.Parameters.Add(player_id);
@@ -236,7 +236,7 @@ namespace HockeyApi.Features.RosterTransaction
             }
             return result;
         }
-        public int UpdatePlayerTType(int playerId, int rtranstype)
+        public int UpdatePlayerTType(int playerId, int rtranstype , DateTime effdate)
         {
             int result = -100;
             using (var conn = _db.CreateConnection())
@@ -250,7 +250,7 @@ namespace HockeyApi.Features.RosterTransaction
 
                 SqlParameter rttype = new SqlParameter(); rttype.ParameterName = "@rttype"; rttype.Value = rtranstype;
                 SqlParameter player_id = new SqlParameter(); player_id.ParameterName = "@player_id"; player_id.Value = playerId;
-                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = DateTime.Now;
+                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = effdate;
 
                 cmd.Parameters.Add(rttype);
                 cmd.Parameters.Add(player_id);
