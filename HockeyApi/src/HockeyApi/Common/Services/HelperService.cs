@@ -133,18 +133,24 @@ namespace HockeyApi.Common.Services
             int playerStatus = CheckPlayerStatus(playerId);
             string result = string.Empty;
             RosterTransactionModel rtmodel = _rtservice.GetRtForPlayerById(playerId);
-            if (playerStatus != (int)TransactionType.Injured)
+            if (TeamHasCapacity(teamCode))
             {
-                int resp = _rtservice.UpdatePlayerTeam(playerId, teamCode, effdt);
-                if (resp == 1)
+                if (playerStatus != (int)TransactionType.Injured)
                 {
-                    result = $"player successufly traded to {teamCode}";
-                    _rhservice.InsertHistoryTransactionRecord(rtmodel);
+                    int resp = _rtservice.UpdatePlayerTeam(playerId, teamCode, effdt);
+                    if (resp == 1)
+                    {
+                        result = $"player successufly traded to {teamCode}";
+                        _rhservice.InsertHistoryTransactionRecord(rtmodel);
+                    }
+                    else
+                        result = "please check the trade information";
                 }
-                else
-                    result = "please check the trade information";
             }
-
+            else
+            {
+                result = "Team is at capacity can not trade";
+            }
             return result;
         }
 

@@ -7,9 +7,12 @@ using HockeyApi.Features.RosterTransaction;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace HockeyApi {
 	public class Startup {
@@ -34,7 +37,7 @@ namespace HockeyApi {
 			services.AddScoped<IPlayerService, PlayerService>();
 			services.AddScoped<IRosterTransactionService, RosterTransactionService>();
 			services.AddScoped<IHelperService, HelperService>();
-			services.AddScoped<IRosterHistoryService, RosterHistoryService>();
+			services.AddScoped<IRosterHistoryService,RosterHistoryService>();
 		}
 
 		public void Configure(IApplicationBuilder app) {
@@ -43,6 +46,7 @@ namespace HockeyApi {
 			app.UseRouting()
 			   .UseEndpoints(r => r.MapControllerRoute("default", "{controller=Team}/{action=Index}/{id?}"))
 			   .Run(_notFoundHander);
+
 		}
 
 		private readonly RequestDelegate _notFoundHander = async ctx => {

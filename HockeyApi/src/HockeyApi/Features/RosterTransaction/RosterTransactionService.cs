@@ -126,14 +126,15 @@ namespace HockeyApi.Features.RosterTransaction
                 {
                     cmd.CommandText = @"SELECT roster_transaction_id,roster_transaction_type_id,player_id,team_code,effective_date 
                     FROM  roster_transaction 
-                    where team_code = @tcode and roster_transaction_type_id != @rttypeId";
+                    where team_code = @tcode and roster_transaction_type_id != @injured and roster_transaction_type_id != @healthy";
 
                     SqlParameter teamcode = new SqlParameter(); teamcode.ParameterName = "@tcode"; teamcode.Value = tcode;
-                    SqlParameter rttypeId = new SqlParameter(); rttypeId.ParameterName = "@rttypeId"; rttypeId.Value = (int)TransactionType.Injured;
-
+                    SqlParameter injured = new SqlParameter(); injured.ParameterName = "@injured"; injured.Value = (int)TransactionType.Injured;
+                    SqlParameter healthy = new SqlParameter(); healthy.ParameterName = "@healthy"; healthy.Value = (int)TransactionType.Healthy;
+                    
                     cmd.Parameters.Add(teamcode);
-                    cmd.Parameters.Add(rttypeId);
-
+                    cmd.Parameters.Add(injured);
+                    cmd.Parameters.Add(healthy);
 
                     using (var rd = cmd.ExecuteReader())
                     {

@@ -55,9 +55,10 @@ namespace HockeyApi.Features.Player
         }
 
         [HttpPut("{playerId}")]
-        public async Task<string> trade(int playerId, string team_code, DateTime effectiveDate)
+        [Route("{playerId}/trade")]
+        public async Task<string> trade(PlayerUpdateDTO dto)
         {
-            return _hservice.TradePlayer(playerId,team_code , effectiveDate);
+            return _hservice.TradePlayer(dto.playerId, dto.teamCode,dto.effectiveDate);
         }
 
 
