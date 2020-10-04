@@ -7,6 +7,10 @@ namespace HockeyApi.Features.RosterTransaction
 {
     public class RosterTransactionModel
     {
+        public RosterTransactionModel()
+        {
+        }
+
         public RosterTransactionModel(int rtid, int rtTypeid, int pid, string tc, DateTime effDate)
         {
             rosterTranscationId = rtid;

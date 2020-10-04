@@ -1,4 +1,5 @@
 using HockeyApi.Common;
+using HockeyApi.Common.Services;
 using HockeyApi.Features;
 using HockeyApi.Features.Player;
 using HockeyApi.Features.RosterTransaction;
@@ -31,6 +32,8 @@ namespace HockeyApi {
 			services.AddScoped<ITeamService, TeamService>();
 			services.AddScoped<IPlayerService, PlayerService>();
 			services.AddScoped<IRosterTransactionService, RosterTransactionService>();
+			services.AddScoped<IHelperService, HelperService>();
+
 		}
 
 		public void Configure(IApplicationBuilder app) {

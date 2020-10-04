@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HockeyApi.Common.DTO;
+using HockeyApi.Common.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,12 @@ namespace HockeyApi.Features.Player
     [ApiController]
     public class PlayerController: Controller
     {
-        IPlayerService _pservice;
-
-        public PlayerController(IPlayerService pservice)
+        private readonly IPlayerService _pservice;
+        private readonly IHelperService _hservice;
+        public PlayerController(IPlayerService pservice, IHelperService hservice)
         {
             _pservice = pservice;
+            _hservice = hservice;
         }
 
         [HttpGet]
@@ -28,6 +31,20 @@ namespace HockeyApi.Features.Player
         {
             return _pservice.getPlayerBYId(id);
         }
+
+        [HttpPost]
+        public async Task<int> CreateNewPlayer(PlayerDetailDto dto)
+        {
+
+            return _hservice.AddPlayerToTeam(dto.fname, dto.lname, dto.teamcode, dto.dt);
+
+
+        }
+
+
+        //[HttpPut]
+        //public async Task<int> updatePlayerTransactionRecord()
+
 
 
     }

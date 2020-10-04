@@ -9,15 +9,10 @@ namespace HockeyApi.Common.DTO
     public class PlayerDetailDto
     {
 
-        public PlayerDetailDto(PlayerModel pmodel, int rtid, DateTime createTime)
-        {
-            player = pmodel;
-            rosterTransactionId = rtid;
-            createTime = transactionDate;
-        }
-
-        public PlayerModel player { get; set; }
-        public int rosterTransactionId { get; set; }
-        public DateTime transactionDate { get; set; }
+        public string fname { get; set; }
+        public string lname { get; set; }
+        public string teamcode { get; set; }
+        public DateTime dt { get; set; }
+        
     }
 }
