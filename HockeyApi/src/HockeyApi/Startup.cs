@@ -1,6 +1,7 @@
 using HockeyApi.Common;
 using HockeyApi.Features;
 using HockeyApi.Features.Player;
+using HockeyApi.Features.RosterTransaction;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +30,7 @@ namespace HockeyApi {
 			services.AddScoped<IDb>(_ => new Db(_configuration.GetConnectionString("Default")));
 			services.AddScoped<ITeamService, TeamService>();
 			services.AddScoped<IPlayerService, PlayerService>();
+			services.AddScoped<IRosterTransactionService, RosterTransactionService>();
 		}
 
 		public void Configure(IApplicationBuilder app) {

@@ -1,4 +1,5 @@
 ﻿using HockeyApi.Common;
+using HockeyApi.Common.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,15 @@ namespace HockeyApi.Features.Player
             return players[0];
         }
 
+
+        //public PlayerDetailDto getPlayerDetail(int pId)
+        //{
+        //    var players = new List<PlayerDetailDto>();
+
+
+
+
+        //}
 
 
 
