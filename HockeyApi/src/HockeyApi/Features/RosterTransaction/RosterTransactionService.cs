@@ -156,7 +156,68 @@ namespace HockeyApi.Features.RosterTransaction
             {
                 cmd.CommandText = @"
                     Insert into roster_transaction (roster_transaction_id,roster_transaction_type_id,player_id,team_code,effective_date) 
-                    values(" + lastRosterId.ToString() + "," + rmodel.rosterTranscationId + "," + rmodel.player_id + "," + rmodel.team_code + "," + rmodel.effective_date + ")";
+                    values(@RosterId,@rosterTranscationTypeId ,@player_id , @team_code ,@effective_date)";
+
+                SqlParameter RosterId = new SqlParameter(); RosterId.ParameterName = "@RosterId"; RosterId.Value = lastRosterId+1;
+                SqlParameter rosterTranscationTypeId = new SqlParameter(); rosterTranscationTypeId.ParameterName = "@rosterTranscationTypeId"; rosterTranscationTypeId.Value = rmodel.rosterTransactionTypeId;
+                SqlParameter player_id = new SqlParameter(); player_id.ParameterName = "@player_id"; player_id.Value = rmodel.player_id;
+                SqlParameter teamcode = new SqlParameter(); teamcode.ParameterName = "@tcode"; teamcode.Value = rmodel.team_code;
+                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = DateTime.Now;
+
+                cmd.Parameters.Add(RosterId);
+                cmd.Parameters.Add(rosterTranscationTypeId);
+                cmd.Parameters.Add(player_id);
+                cmd.Parameters.Add(teamcode);
+                cmd.Parameters.Add(effective_date);
+
+                result = cmd.ExecuteNonQuery();
+            }
+            return result;
+        }
+
+        public int UpdatePlayerTeam (int playerId, string teamcode)
+        {
+            int result = -100;
+            using (var conn = _db.CreateConnection())
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"
+                    update roster_transaction 
+                    set team_code= @tcode , effective_date =@effective_date 
+                    where player_id = @player_id";
+
+               
+                SqlParameter tcode = new SqlParameter(); tcode.ParameterName = "@tcode"; tcode.Value = teamcode;
+                SqlParameter player_id = new SqlParameter(); player_id.ParameterName = "@player_id"; player_id.Value = playerId;
+                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = DateTime.Now;
+
+                cmd.Parameters.Add(tcode);
+                cmd.Parameters.Add(player_id);
+                cmd.Parameters.Add(effective_date);
+
+                result = cmd.ExecuteNonQuery();
+            }
+            return result;
+        }
+        public int UpdatePlayerTType(int playerId, int rtranstype)
+        {
+            int result = -100;
+            using (var conn = _db.CreateConnection())
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"
+                    update roster_transaction 
+                    set roster_transaction_type= @rttype , effective_date =@effective_date 
+                    where player_id = @player_id";
+
+
+                SqlParameter rttype = new SqlParameter(); rttype.ParameterName = "@rttype"; rttype.Value = rtranstype;
+                SqlParameter player_id = new SqlParameter(); player_id.ParameterName = "@player_id"; player_id.Value = playerId;
+                SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = DateTime.Now;
+
+                cmd.Parameters.Add(rttype);
+                cmd.Parameters.Add(player_id);
+                cmd.Parameters.Add(effective_date);
 
                 result = cmd.ExecuteNonQuery();
             }
