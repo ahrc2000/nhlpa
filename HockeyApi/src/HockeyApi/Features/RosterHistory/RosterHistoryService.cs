@@ -34,7 +34,7 @@ namespace HockeyApi.Features.RosterHistory
                 SqlParameter team_code = new SqlParameter(); team_code.ParameterName = "@team_code"; team_code.Value = rtmodel.team_code;
                 SqlParameter effective_date = new SqlParameter(); effective_date.ParameterName = "@effective_date"; effective_date.Value = rtmodel.effective_date;
 
-
+                cmd.Parameters.Add(rostertransid);
                 cmd.Parameters.Add(rosterTranscationTypeId);
                 cmd.Parameters.Add(player_id);
                 cmd.Parameters.Add(team_code);

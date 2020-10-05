@@ -59,7 +59,7 @@ namespace HockeyApi.Features.RosterTransaction
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = @"
-                    SELECT    *
+                    SELECT    roster_transaction_id,roster_transaction_type_id,player_id,team_code,effective_date
                     FROM        roster_transaction where player_id =" + id.ToString() + " order by effective_date desc";
 
                 using (var rd = cmd.ExecuteReader())
@@ -112,9 +112,9 @@ namespace HockeyApi.Features.RosterTransaction
                     }
                 }
             }
-
             return rtransactions;
         }
+
 
         public List<RosterTransactionModel> getActivePlayersByTeamCode(string tcode)
         {
@@ -245,7 +245,7 @@ namespace HockeyApi.Features.RosterTransaction
             {
                 cmd.CommandText = @"
                     update roster_transaction 
-                    set roster_transaction_type= @rttype , effective_date =@effective_date 
+                    set roster_transaction_type_id = @rttype , effective_date =@effective_date 
                     where player_id = @player_id";
 
 

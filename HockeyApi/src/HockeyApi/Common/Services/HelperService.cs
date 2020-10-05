@@ -107,6 +107,7 @@ namespace HockeyApi.Common.Services
         {
 
             RosterTransactionModel rmodel = _rtservice.GetRtForPlayerById(playerId);
+            rmodel.effective_date = efdate;
             _rhservice.InsertHistoryTransactionRecord(rmodel);
             int result = _rtservice.UpdatePlayerTType(playerId, (int)TransactionType.Healthy, efdate);
             return result;
@@ -115,6 +116,7 @@ namespace HockeyApi.Common.Services
         public int SetPlayerStatusToInjured(int playerId, DateTime efdate)
         {
             RosterTransactionModel rmodel = _rtservice.GetRtForPlayerById(playerId);
+            rmodel.effective_date = efdate;
             _rhservice.InsertHistoryTransactionRecord(rmodel);
             int result = _rtservice.UpdatePlayerTType(playerId, (int)TransactionType.Injured, efdate);
             return result;

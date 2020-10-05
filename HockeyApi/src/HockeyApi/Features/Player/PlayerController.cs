@@ -43,15 +43,17 @@ namespace HockeyApi.Features.Player
         }
 
         [HttpPut("{playerId}")]
-        public async Task<string> Injured(int playerId, DateTime effectiveDate)
+        [Route("{playerId}/Injured")]
+        public async Task<string> Injured(PlayerUpdateDTO dto)
         {
-            return _hservice.ChangePlayerStatus(playerId, (int)TransactionType.Injured, effectiveDate);
+            return _hservice.ChangePlayerStatus(dto.playerId, (int)TransactionType.Injured,dto.effectiveDate);
         }
 
         [HttpPut("{playerId}")]
-        public async Task<string> healthy(int playerId, DateTime effectiveDate)
+        [Route("{playerId}/healthy")]
+        public async Task<string> healthy(PlayerUpdateDTO dto)
         {
-            return _hservice.ChangePlayerStatus(playerId, (int)TransactionType.Healthy, effectiveDate);
+            return _hservice.ChangePlayerStatus(dto.playerId, (int)TransactionType.Healthy,dto.effectiveDate);
         }
 
         [HttpPut("{playerId}")]
