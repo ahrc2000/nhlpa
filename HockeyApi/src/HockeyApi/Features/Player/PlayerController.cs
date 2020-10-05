@@ -21,20 +21,26 @@ namespace HockeyApi.Features.Player
             _hservice = hservice;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<PlayerModel>> Get()
-        {
-            return  _pservice.getAllPlayers();
-        }
+        //[HttpGet]
+        //public async Task<IEnumerable<PlayerModel>> Get()
+        //{
+        //    return  _pservice.getAllPlayers();
+        //}
 
         [HttpGet("{id}")]
-        public async Task<PlayerModel> Get(int id)
+        public async Task<PlayerTransactionDto> Get(int id)
         {
-            return _pservice.getPlayerBYId(id);
+            return _hservice.getPlayerDataById(id);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<PlayerModel>> Get(string fname, string lname)
+        {
+            return _pservice.SearchPlayers(fname, lname);
         }
 
         [HttpPost]
-        public async Task<int> CreateNewPlayer(PlayerDetailDto dto)
+        public async Task<string> CreateNewPlayer(PlayerDetailDto dto)
         {
 
             return _hservice.AddPlayerToTeam(dto.fname, dto.lname, dto.teamcode, dto.dt);

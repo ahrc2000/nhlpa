@@ -1,4 +1,5 @@
-﻿using HockeyApi.Common.Enums;
+﻿using HockeyApi.Common.DTO;
+using HockeyApi.Common.Enums;
 using HockeyApi.Features;
 using HockeyApi.Features.Player;
 using HockeyApi.Features.RosterHistory;
@@ -28,8 +29,9 @@ namespace HockeyApi.Common.Services
 
 
 
-        public int AddPlayerToTeam(string fname, string lname, string tcode, DateTime dt)
+        public string AddPlayerToTeam(string fname, string lname, string tcode, DateTime dt)
         {
+            string result = string.Empty;
             if (TeamHasCapacity(tcode))
             {
                 int pid = _pservice.AddNewPlayer(fname, lname);
@@ -42,10 +44,13 @@ namespace HockeyApi.Common.Services
                     team_code = tcode
                 };
                 int rtId = _rtservice.AddPlayerTransaction(rtm);
-                return rtId;
+                if (rtId == 1)
+                    return "player has been successfuly created";
+                else
+                    return "There was an error, player has not been created";
             }
             else
-                return -1;
+                return "Team size is at max. Player has not been created";
         }
 
         private bool TeamHasCapacity(string tcode)
@@ -177,7 +182,12 @@ namespace HockeyApi.Common.Services
             return result;
         }
 
-
+        public PlayerTransactionDto getPlayerDataById(int player_id)
+        {
+            PlayerModel pmodel = _pservice.getPlayerBYId(player_id);
+            List < RosterHistoryModel > rhistory = _rhservice.getPlayerHistory(player_id);
+            return new PlayerTransactionDto(pmodel, rhistory);
+        }
 
 
 

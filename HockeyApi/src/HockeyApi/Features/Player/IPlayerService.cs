@@ -9,5 +9,6 @@ namespace HockeyApi.Features.Player
         PlayerModel getPlayerBYId(int pId);
         int AddNewPlayer(string fname, string lname);
         int GetLatestPlayer();
+        IEnumerable<PlayerModel> SearchPlayers(string fname, string lname);
     }
 }

@@ -17,6 +17,38 @@ namespace HockeyApi.Features.RosterHistory
             _db = db;
         }
 
+        public List<RosterHistoryModel> getPlayerHistory(int player_id)
+        {
+
+            var players = new List<RosterHistoryModel>();
+
+            using (var conn = _db.CreateConnection())
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"
+                    SELECT   *
+                    FROM        roster_trans_history
+                    where player_id =" + player_id.ToString();
+
+                using (var rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        players.Add(
+                            new RosterHistoryModel(
+                                rd.GetInt32(0),
+                                rd.GetInt32(1),
+                                rd.GetInt32(2),
+                                rd.GetInt32(3),
+                                rd.GetString(4),
+                                rd.GetDateTime(5)));
+                    }
+                }
+            }
+
+            return players;
+        }
+
         public void InsertHistoryTransactionRecord(RosterTransactionModel rtmodel)
         {
 
